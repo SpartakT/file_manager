@@ -1,22 +1,19 @@
-# Менеджер файловой системы (File System Manager)
+File System Manager
 
-Простая консольная утилита на Python для базовых операций с файлами и папками.
+CLI утилита для управления файлами.
 
-Это учебный проект в рамках блока «Прикладной Python».
+Команды
+- `python cli.py copy source [dest]` - Копировать файл.
+  Пример: `python cli.py copy test.txt`
+- `python cli.py delete path` - Удалить файл/папку.
+  Пример: `python cli.py delete folder_name`
+- `python cli.py count [path]` - Посчитать файлы в папке (вкл. вложенные).
+  Пример: `python cli.py count .`
+- `python cli.py search [path] pattern` - Поиск по regex.
+  Пример: `python cli.py search . "\.txt$"`
+- `python cli.py add_date path [--recursive]` - Добавить дату создания в имя.
+  Пример: `python cli.py add_date folder --recursive`
+- `python cli.py analyse [path]` - Анализ размеров.
+  Пример: `python cli.py analyse .`
 
-## Возможности
-
-- Копирование файлов
-- Удаление файлов и папок
-- Подсчёт количества файлов в папке (включая вложенные)
-- Поиск файлов по регулярному выражению
-- Добавление даты создания в начало имени файла/файлов в папке
-- Анализ размеров файлов и папок
-
-## Требования
-
-- Python 3.8+
-- Стандартные библиотеки: `os`, `shutil`, `re`, `argparse`, `time`
-
-
-
+Help: `python cli.py --help`
