@@ -24,20 +24,21 @@ Help: `fm --help`
 
 
 Для проверки
-- `python cli.py copy source dest` - Копировать файл.
-  Пример: `python cli.py copy test.txt`
-- `python cli.py delete path` - Удалить файл/папку.
-  Пример: `python cli.py delete folder_name`
-- `python cli.py count path` - Посчитать файлы в папке (вкл. вложенные).
-  Пример: `python cli.py count .`
-- `python cli.py search path pattern` - Поиск по regex.
-  Пример: `python cli.py search . "\.txt$"`
-- `python cli.py add_date path --recursive` - Добавить дату создания в имя.
-  Пример: `python cli.py add_date folder --recursive`
-- `python cli.py analyse path` - Анализ размеров.
-  Пример: `python cli.py analyse .`
+- `python filemanager/cli.py copy source dest` - Копировать файл.
+  Пример: `python filemanager/cli.py copy test.txt`
+- `python filemanager/cli.py delete path` - Удалить файл/папку.
+  Пример: `python filemanager/cli.py delete folder_name`
+- `python filemanager/cli.py count path` - Посчитать файлы в папке (вкл. вложенные).
+  Пример: `python filemanager/cli.py count .`
+- `python filemanager/cli.py search path pattern` - Поиск по regex.
+  Пример: `python filemanager/cli.py search . "\.txt$"`
+- `python filemanager/cli.py add_date path --recursive` - Добавить дату создания в имя.
+  Пример: `python filemanager/cli.py add_date folder --recursive`
+- `python filemanager/cli.py analyse path` - Анализ размеров.
+  Пример: `python filemanager/cli.py analyse .`
 
-Help: `python cli.py --help`
+Help: `python filemanager/cli.py --help`
+
 
 
 
