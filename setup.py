@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="my_file-manager",
+    name="file-manager",
     version="1.0.0",
     description="CLI утилита для управления файлами",
     author="SpartakT",
