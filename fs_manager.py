@@ -58,17 +58,16 @@ def analyze_sizes(path):
         raise NotADirectoryError(f"{path} is not a directory")
     total_size = 0
     print(f"Analyzing {path}:")
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            size = os.path.getsize(file_path)
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        if os.path.isfile(item_path):
+            size = os.path.getsize(item_path)
             total_size += size
-            print(f"- {file_path} {human_readable_size(size)}")
-        for dir in dirs:
-            dir_path = os.path.join(root, dir)
-            dir_size = get_dir_size(dir_path)
+            print(f"- {item_path} {human_readable_size(size)}")
+        elif os.path.isdir(item_path):
+            dir_size = get_dir_size(item_path)
             total_size += dir_size
-            print(f"- {dir_path} {human_readable_size(dir_size)}")
+            print(f"- {item_path} {human_readable_size(dir_size)}")
     print(f"> full size: {human_readable_size(total_size)}")
 
 def get_dir_size(path):
