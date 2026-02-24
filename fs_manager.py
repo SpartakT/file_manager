@@ -71,6 +71,13 @@ def analyze_sizes(path):
             print(f"- {dir_path} {human_readable_size(dir_size)}")
     print(f"> full size: {human_readable_size(total_size)}")
 
+def get_dir_size(path):
+    total = 0
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            total += os.path.getsize(os.path.join(root, file))
+    return total
+
 def human_readable_size(size):
     for unit in ['', 'kb', 'mb', 'gb', 'tb']:
         if size < 1024:
