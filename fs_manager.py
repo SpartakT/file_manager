@@ -78,7 +78,7 @@ def get_dir_size(path):
     return total
 
 def human_readable_size(size):
-    for unit in ['', 'kb', 'mb', 'gb', 'tb']:
+    for unit in ['b', 'kb', 'mb', 'gb', 'tb']:
         if size < 1024:
             return f"{size:.0f}{unit}"
         size /= 1024
