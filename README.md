@@ -23,8 +23,7 @@ Help: `fm --help`
 
 
 
-Для проверки:
-Команды
+Для проверки
 - `python cli.py copy source dest` - Копировать файл.
   Пример: `fm copy test.txt`
 - `python cli.py delete path` - Удалить файл/папку.
@@ -39,6 +38,7 @@ Help: `fm --help`
   Пример: `python cli.py analyse .`
 
 Help: `python cli.py --help`
+
 
 
 
