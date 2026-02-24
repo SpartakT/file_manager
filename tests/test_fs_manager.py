@@ -2,7 +2,8 @@ import unittest
 import os
 import tempfile
 import shutil
-from fs_manager import copy_file, delete_path, count_files, search_files, add_creation_date, analyze_sizes
+from unittest.mock import patch
+from fs_manager import copy_file, delete_path, count_files, search_files, add_creation_date, analyze_sizes , human_readable_size
 
 class TestFSManager(unittest.TestCase):
     def setUp(self):
@@ -42,6 +43,20 @@ class TestFSManager(unittest.TestCase):
         add_creation_date(self.test_file)
         new_name = os.listdir(self.test_dir)[0]
         self.assertTrue(new_name.startswith("20"))
+
+    def test_analyze_sizes(self):
+        subdir = os.path.join(self.test_dir, "sub")
+        os.mkdir(subdir)
+        subfile = os.path.join(subdir, "sub.txt")
+        with open(subfile, "w") as f:
+            f.write("sub")
+        expected_total = os.path.getsize(self.test_file) + os.path.getsize(subfile)
+        expected_str = human_readable_size(expected_total)
+        with patch('builtins.print') as mock_print:
+            analyze_sizes(self.test_dir)
+        printed = [str(call[0][0]) for call in mock_print.call_args_list if call[0]]
+        self.assertTrue(any(expected_str in s for s in printed))
+
 
 if __name__ == "__main__":
     unittest.main()
