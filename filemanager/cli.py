@@ -1,6 +1,6 @@
 import argparse
 import sys
-from fs_manager import copy_file, delete_path, count_files, search_files, add_creation_date, analyze_sizes
+from filemanager.fs_manager import copy_file, delete_path, count_files, search_files, add_creation_date, analyze_sizes
 
 def main():
     parser = argparse.ArgumentParser(description="File System Manager CLI")
