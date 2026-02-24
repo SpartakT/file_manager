@@ -25,7 +25,7 @@ Help: `fm --help`
 
 Для проверки
 - `python cli.py copy source dest` - Копировать файл.
-  Пример: `fm copy test.txt`
+  Пример: `python cli.py copy test.txt`
 - `python cli.py delete path` - Удалить файл/папку.
   Пример: `python cli.py delete folder_name`
 - `python cli.py count path` - Посчитать файлы в папке (вкл. вложенные).
@@ -38,6 +38,7 @@ Help: `fm --help`
   Пример: `python cli.py analyse .`
 
 Help: `python cli.py --help`
+
 
 
 
