@@ -35,6 +35,17 @@ def search_files(path, pattern):
                 results.append(os.path.join(root, file))
     return results
 
+def add_creation_date(path, recursive=False):
+    if os.path.isfile(path):
+        _add_date_to_file(path)
+    elif os.path.isdir(path):
+        for root, dirs, files in os.walk(path) if recursive else [(path, [], os.listdir(path))]:
+            for file in files:
+                if os.path.isfile(os.path.join(root, file)):
+                    _add_date_to_file(os.path.join(root, file))
+    else:
+        raise FileNotFoundError(f"{path} not found")
+
 def _add_date_to_file(file_path):
     ctime = os.path.getctime(file_path)
     date_str = time.strftime("%Y-%m-%d_", time.localtime(ctime))
