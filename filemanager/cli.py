@@ -24,6 +24,9 @@ def main():
     add_date_parser.add_argument("path", help="File or folder")
     add_date_parser.add_argument("--recursive", action="store_true", help="Recursive for subfolders")
 
+    analyse_parser = subparsers.add_parser("analyse", help="Analyze sizes in folder")
+    analyse_parser.add_argument("path", nargs="?", default=".", help="Path (default: current dir)")
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -49,12 +52,11 @@ def main():
         elif args.command == "add_date":
             add_creation_date(args.path, args.recursive)
             print(f"Added dates to files in {args.path} (recursive: {args.recursive})")
-
+        elif args.command == "analyse":
+            analyze_sizes(args.path)
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
-
-
 
 if __name__ == "__main__":
     main()

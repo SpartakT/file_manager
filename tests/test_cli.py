@@ -58,6 +58,22 @@ class TestCLI(unittest.TestCase):
         main()
         mock_add_date.assert_called_once_with("some_path", True)
 
+    @patch("sys.argv", ["cli.py", "analyse"])
+    @patch("filemanager.cli.analyze_sizes")
+    def test_analyse_default(self, mock_analyse):
+        main()
+        mock_analyse.assert_called_once_with(".")
+
+    @patch("sys.argv", ["cli.py", "analyse", "some_dir"])
+    @patch("filemanager.cli.analyze_sizes")
+    def test_analyse_with_path(self, mock_analyse):
+        main()
+        mock_analyse.assert_called_once_with("some_dir")
+
+    @patch("sys.argv", ["cli.py"])
+    def test_no_arguments(self):
+        with self.assertRaises(SystemExit):
+            main()
 
 if __name__ == "__main__":
     unittest.main()

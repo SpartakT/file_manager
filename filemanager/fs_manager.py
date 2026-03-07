@@ -41,3 +41,34 @@ def _add_date_to_file(file_path):
     dir_name, file_name = os.path.split(file_path)
     new_name = os.path.join(dir_name, date_str + file_name)
     os.rename(file_path, new_name)
+
+def analyze_sizes(path):
+    if not os.path.isdir(path):
+        raise NotADirectoryError(f"{path} is not a directory")
+    total_size = 0
+    print(f"Analyzing {path}:")
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        if os.path.isfile(item_path):
+            size = os.path.getsize(item_path)
+            total_size += size
+            print(f"- {item_path} {human_readable_size(size)}")
+        elif os.path.isdir(item_path):
+            dir_size = get_dir_size(item_path)
+            total_size += dir_size
+            print(f"- {item_path} {human_readable_size(dir_size)}")
+    print(f"> full size: {human_readable_size(total_size)}")
+
+def get_dir_size(path):
+    total = 0
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            total += os.path.getsize(os.path.join(root, file))
+    return total
+
+def human_readable_size(size):
+    for unit in ['b', 'kb', 'mb', 'gb', 'tb']:
+        if size < 1024:
+            return f"{size:.0f}{unit}"
+        size /= 1024
+    return f"{size:.0f}pb"
