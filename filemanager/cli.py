@@ -10,6 +10,9 @@ def main():
     copy_parser.add_argument("source", help="Source file")
     copy_parser.add_argument("destination", nargs="?", default=None, help="Destination (optional, defaults to current dir)")
 
+    delete_parser = subparsers.add_parser("delete", help="Delete a file or folder")
+    delete_parser.add_argument("path", help="Path to delete")
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -21,6 +24,9 @@ def main():
             destination = args.destination or args.source + "_copy"
             copy_file(args.source, destination)
             print(f"Copied {args.source} to {destination}")
+        elif args.command == "delete":
+            delete_path(args.path)
+            print(f"Deleted {args.path}")
 
     except Exception as e:
         print(f"Error: {e}")

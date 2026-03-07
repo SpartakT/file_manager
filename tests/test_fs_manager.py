@@ -20,6 +20,14 @@ class TestFSManager(unittest.TestCase):
         copy_file(self.test_file, dest)
         self.assertTrue(os.path.exists(dest))
 
+    def test_delete_path(self):
+        delete_path(self.test_file)
+        self.assertFalse(os.path.exists(self.test_file))
+        subdir = os.path.join(self.test_dir, "subdir")
+        os.mkdir(subdir)
+        delete_path(subdir)
+        self.assertFalse(os.path.exists(subdir))
+
 
 if __name__ == "__main__":
     unittest.main()
