@@ -20,6 +20,10 @@ def main():
     search_parser.add_argument("path", nargs="?", default=".", help="Path (default: current dir)")
     search_parser.add_argument("pattern", help="Regex pattern")
 
+    add_date_parser = subparsers.add_parser("add_date", help="Add creation date to file/folder names")
+    add_date_parser.add_argument("path", help="File or folder")
+    add_date_parser.add_argument("--recursive", action="store_true", help="Recursive for subfolders")
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -42,6 +46,9 @@ def main():
             print("Found files:")
             for res in results:
                 print(res)
+        elif args.command == "add_date":
+            add_creation_date(args.path, args.recursive)
+            print(f"Added dates to files in {args.path} (recursive: {args.recursive})")
 
     except Exception as e:
         print(f"Error: {e}")

@@ -34,3 +34,10 @@ def search_files(path, pattern):
             if regex.search(file):
                 results.append(os.path.join(root, file))
     return results
+
+def _add_date_to_file(file_path):
+    ctime = os.path.getctime(file_path)
+    date_str = time.strftime("%Y-%m-%d_", time.localtime(ctime))
+    dir_name, file_name = os.path.split(file_path)
+    new_name = os.path.join(dir_name, date_str + file_name)
+    os.rename(file_path, new_name)

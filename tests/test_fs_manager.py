@@ -39,6 +39,11 @@ class TestFSManager(unittest.TestCase):
         results = search_files(self.test_dir, r"\.txt$")
         self.assertIn(self.test_file, results)
 
+    def test_add_creation_date(self):
+        add_creation_date(self.test_file)
+        new_name = os.listdir(self.test_dir)[0]
+        self.assertTrue(new_name.startswith("20"))
+
 
 if __name__ == "__main__":
     unittest.main()

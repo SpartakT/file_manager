@@ -46,6 +46,18 @@ class TestCLI(unittest.TestCase):
         main()
         mock_search.assert_called_once_with("some_dir", "pattern")
 
+    @patch("sys.argv", ["cli.py", "add_date", "some_path"])
+    @patch("filemanager.cli.add_creation_date")
+    def test_add_date_non_recursive(self, mock_add_date):
+        main()
+        mock_add_date.assert_called_once_with("some_path", False)
+
+    @patch("sys.argv", ["cli.py", "add_date", "some_path", "--recursive"])
+    @patch("filemanager.cli.add_creation_date")
+    def test_add_date_recursive(self, mock_add_date):
+        main()
+        mock_add_date.assert_called_once_with("some_path", True)
+
 
 if __name__ == "__main__":
     unittest.main()
