@@ -13,6 +13,9 @@ def main():
     delete_parser = subparsers.add_parser("delete", help="Delete a file or folder")
     delete_parser.add_argument("path", help="Path to delete")
 
+    count_parser = subparsers.add_parser("count", help="Count files in folder (including subfolders)")
+    count_parser.add_argument("path", nargs="?", default=".", help="Path (default: current dir)")
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -27,6 +30,9 @@ def main():
         elif args.command == "delete":
             delete_path(args.path)
             print(f"Deleted {args.path}")
+        elif args.command == "count":
+            count = count_files(args.path)
+            print(f"Total files: {count}")
 
     except Exception as e:
         print(f"Error: {e}")

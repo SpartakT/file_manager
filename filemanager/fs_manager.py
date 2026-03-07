@@ -15,3 +15,11 @@ def delete_path(path):
         os.remove(path)
     else:
         shutil.rmtree(path)
+
+def count_files(path):
+    if not os.path.isdir(path):
+        raise NotADirectoryError(f"{path} is not a directory")
+    count = 0
+    for root, dirs, files in os.walk(path):
+        count += len(files)
+    return count

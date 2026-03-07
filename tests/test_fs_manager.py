@@ -28,6 +28,13 @@ class TestFSManager(unittest.TestCase):
         delete_path(subdir)
         self.assertFalse(os.path.exists(subdir))
 
+    def test_count_files(self):
+        self.assertEqual(count_files(self.test_dir), 1)
+        os.mkdir(os.path.join(self.test_dir, "subdir"))
+        with open(os.path.join(self.test_dir, "subdir", "sub.txt"), "w") as f:
+            f.write("sub")
+        self.assertEqual(count_files(self.test_dir), 2)
+
 
 if __name__ == "__main__":
     unittest.main()

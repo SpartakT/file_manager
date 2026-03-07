@@ -22,6 +22,18 @@ class TestCLI(unittest.TestCase):
         main()
         mock_delete.assert_called_once_with("some_path")
 
+    @patch("sys.argv", ["cli.py", "count"])
+    @patch("filemanager.cli.count_files")
+    def test_count_default(self, mock_count):
+        main()
+        mock_count.assert_called_once_with(".")
+
+    @patch("sys.argv", ["cli.py", "count", "some_dir"])
+    @patch("filemanager.cli.count_files")
+    def test_count_with_path(self, mock_count):
+        main()
+        mock_count.assert_called_once_with("some_dir")
+
 
 if __name__ == "__main__":
     unittest.main()
