@@ -35,6 +35,10 @@ class TestFSManager(unittest.TestCase):
             f.write("sub")
         self.assertEqual(count_files(self.test_dir), 2)
 
+    def test_search_files(self):
+        results = search_files(self.test_dir, r"\.txt$")
+        self.assertIn(self.test_file, results)
+
 
 if __name__ == "__main__":
     unittest.main()

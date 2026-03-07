@@ -34,6 +34,18 @@ class TestCLI(unittest.TestCase):
         main()
         mock_count.assert_called_once_with("some_dir")
 
+    @patch("sys.argv", ["cli.py", "search", "pattern"])
+    @patch("filemanager.cli.search_files")
+    def test_search_default_path(self, mock_search):
+        main()
+        mock_search.assert_called_once_with(".", "pattern")
+
+    @patch("sys.argv", ["cli.py", "search", "some_dir", "pattern"])
+    @patch("filemanager.cli.search_files")
+    def test_search_with_path(self, mock_search):
+        main()
+        mock_search.assert_called_once_with("some_dir", "pattern")
+
 
 if __name__ == "__main__":
     unittest.main()

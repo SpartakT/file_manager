@@ -16,6 +16,10 @@ def main():
     count_parser = subparsers.add_parser("count", help="Count files in folder (including subfolders)")
     count_parser.add_argument("path", nargs="?", default=".", help="Path (default: current dir)")
 
+    search_parser = subparsers.add_parser("search", help="Search files by regex in folder (including subfolders)")
+    search_parser.add_argument("path", nargs="?", default=".", help="Path (default: current dir)")
+    search_parser.add_argument("pattern", help="Regex pattern")
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -33,6 +37,11 @@ def main():
         elif args.command == "count":
             count = count_files(args.path)
             print(f"Total files: {count}")
+        elif args.command == "search":
+            results = search_files(args.path, args.pattern)
+            print("Found files:")
+            for res in results:
+                print(res)
 
     except Exception as e:
         print(f"Error: {e}")

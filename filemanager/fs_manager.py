@@ -23,3 +23,14 @@ def count_files(path):
     for root, dirs, files in os.walk(path):
         count += len(files)
     return count
+
+def search_files(path, pattern):
+    if not os.path.isdir(path):
+        raise NotADirectoryError(f"{path} is not a directory")
+    results = []
+    regex = re.compile(pattern)
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if regex.search(file):
+                results.append(os.path.join(root, file))
+    return results
