@@ -382,6 +382,58 @@ def main(page: ft.Page) -> None:
         ),
     )
 
+    srch_dir = path_field(
+        "C:\\path\\to\\folder",
+        "Папка для поиска файлов",
+    )
+    srch_pat = ft.TextField(
+        hint_text=r"Regex, например: \.py$",
+        bgcolor=SURFACE,
+        border_color=BORDER,
+        focused_border_color=ACCENT,
+        color=TEXT,
+        hint_style=ft.TextStyle(color=MUTED),
+        border_radius=8,
+        tooltip="Регулярное выражение для поиска по имени файла",
+    )
+
+    def do_search(_) -> None:
+        path = srch_dir.value.strip() or "."
+        pat = srch_pat.value.strip()
+        if not pat:
+            err("Введите паттерн")
+            return
+        result, _, e = capture_stdout(search_files, path, pat)
+        if e:
+            err(e)
+        elif not result:
+            ok("Файлы не найдены.")
+        else:
+            ok("Найдено:\n" + "\n".join(result))
+
+    search_card = ToolCard(
+        "Поиск файлов по regex",
+        ft.Icons.SEARCH,
+        SUCCESS,
+        ft.Column(
+            spacing=12,
+            controls=[
+                labeled(
+                    "Папка поиска",
+                    prow(srch_dir, dir_pick_btn(srch_dir)),
+                ),
+                labeled("Regex-паттерн", srch_pat),
+                action_btn(
+                    "Найти",
+                    ft.Icons.SEARCH,
+                    SUCCESS,
+                    do_search,
+                    "Найти файлы по имени",
+                ),
+            ],
+        ),
+    )
+
     header = ft.Container(
         content=ft.Row(
             spacing=14,
