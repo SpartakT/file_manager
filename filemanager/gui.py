@@ -284,6 +284,72 @@ def main(page: ft.Page) -> None:
         ),
     )
 
+    del_f = path_field(
+        "C:\\path\\to\\target",
+        "Файл или папка для удаления",
+    )
+
+    def confirmed(_) -> None:
+        path = del_f.value.strip()
+        confirm.open = False
+        page.update()
+        _, _, e = capture_stdout(delete_path, path)
+        if e:
+            err(e)
+        else:
+            ok(f"Удалено: {path}")
+
+    def cancel(_) -> None:
+        confirm.open = False
+        page.update()
+
+    confirm.actions = [
+        ft.TextButton(
+            "Отмена",
+            on_click=cancel,
+            style=ft.ButtonStyle(color=MUTED),
+        ),
+        action_btn(
+            "Удалить",
+            ft.Icons.DELETE_FOREVER,
+            DANGER,
+            confirmed,
+            "Подтвердить удаление",
+        ),
+    ]
+
+    def do_delete(_) -> None:
+        if not del_f.value.strip():
+            err("Укажите путь")
+            return
+        confirm.open = True
+        page.update()
+
+    delete_card = ToolCard(
+        "Удалить файл / папку",
+        ft.Icons.DELETE_OUTLINE,
+        DANGER,
+        ft.Column(
+            spacing=12,
+            controls=[
+                labeled(
+                    "Путь к файлу или папке",
+                    ft.Row(
+                        controls=[del_f, file_or_dir_btns(del_f)],
+                        spacing=6,
+                    ),
+                ),
+                action_btn(
+                    "Удалить",
+                    ft.Icons.DELETE_FOREVER,
+                    DANGER,
+                    do_delete,
+                    "Безвозвратно удалить файл или папку",
+                ),
+            ],
+        ),
+    )
+
     header = ft.Container(
         content=ft.Row(
             spacing=14,
