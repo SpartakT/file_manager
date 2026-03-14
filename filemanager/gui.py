@@ -350,6 +350,38 @@ def main(page: ft.Page) -> None:
         ),
     )
 
+    cnt_f = path_field(
+        "C:\\path\\to\\folder  (пусто = текущая)",
+        "Папка для подсчёта файлов включая подпапки",
+    )
+
+    def do_count(_) -> None:
+        path = cnt_f.value.strip() or "."
+        result, _, e = capture_stdout(count_files, path)
+        if e:
+            err(e)
+        else:
+            ok(f"Файлов в «{path}»: {result}")
+
+    count_card = ToolCard(
+        "Подсчёт файлов",
+        ft.Icons.FOLDER_COPY,
+        "#f6a15b",
+        ft.Column(
+            spacing=12,
+            controls=[
+                labeled("Папка", prow(cnt_f, dir_pick_btn(cnt_f))),
+                action_btn(
+                    "Посчитать",
+                    ft.Icons.NUMBERS,
+                    "#f6a15b",
+                    do_count,
+                    "Посчитать все файлы рекурсивно",
+                ),
+            ],
+        ),
+    )
+
     header = ft.Container(
         content=ft.Row(
             spacing=14,
