@@ -240,6 +240,50 @@ def main(page: ft.Page) -> None:
     )
     page.overlay.append(confirm)
 
+    src_f = path_field(
+        "C:\\path\\to\\file.txt",
+        "Файл-источник для копирования",
+    )
+    dst_f = path_field(
+        "C:\\path\\to\\dest.txt (необязательно)",
+        "Путь назначения; если пусто — добавится суффикс _copy",
+    )
+
+    def do_copy(_) -> None:
+        src = src_f.value.strip()
+        if not src:
+            err("Укажите источник")
+            return
+        dst = dst_f.value.strip() or src + "_copy"
+        _, _, e = capture_stdout(copy_file, src, dst)
+        if e:
+            err(e)
+        else:
+            ok(f"Скопировано:\n  {src}\n→ {dst}")
+
+    copy_card = ToolCard(
+        "Копировать файл",
+        ft.Icons.COPY,
+        ACCENT,
+        ft.Column(
+            spacing=12,
+            controls=[
+                labeled("Источник", prow(src_f, file_pick_btn(src_f))),
+                labeled(
+                    "Назначение (необязательно)",
+                    prow(dst_f, file_pick_btn(dst_f)),
+                ),
+                action_btn(
+                    "Копировать",
+                    ft.Icons.COPY,
+                    ACCENT,
+                    do_copy,
+                    "Скопировать файл в указанное место",
+                ),
+            ],
+        ),
+    )
+
     header = ft.Container(
         content=ft.Row(
             spacing=14,
