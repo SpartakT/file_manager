@@ -434,6 +434,57 @@ def main(page: ft.Page) -> None:
         ),
     )
 
+    date_f = path_field(
+        "C:\\path\\to\\folder",
+        "Файл или папка для добавления даты создания",
+    )
+    recursive = ft.Checkbox(
+        label="Рекурсивно (для папок)",
+        value=False,
+        fill_color=ACCENT,
+        check_color="#fff",
+        tooltip="Обрабатывать все вложенные подпапки",
+    )
+
+    def do_add_date(_) -> None:
+        path = date_f.value.strip()
+        if not path:
+            err("Укажите путь")
+            return
+        _, _, e = capture_stdout(
+            add_creation_date, path, recursive.value
+        )
+        if e:
+            err(e)
+        else:
+            ok(f"Даты добавлены: «{path}»")
+
+    date_card = ToolCard(
+        "Добавить дату создания к именам",
+        ft.Icons.CALENDAR_TODAY,
+        ACCENT2,
+        ft.Column(
+            spacing=12,
+            controls=[
+                labeled(
+                    "Файл или папка",
+                    ft.Row(
+                        controls=[date_f, file_or_dir_btns(date_f)],
+                        spacing=6,
+                    ),
+                ),
+                recursive,
+                action_btn(
+                    "Добавить даты",
+                    ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
+                    ACCENT2,
+                    do_add_date,
+                    "Переименовать файлы, добавив дату создания",
+                ),
+            ],
+        ),
+    )
+
     header = ft.Container(
         content=ft.Row(
             spacing=14,
