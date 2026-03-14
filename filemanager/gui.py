@@ -485,6 +485,42 @@ def main(page: ft.Page) -> None:
         ),
     )
 
+    anl_f = path_field(
+        "C:\\path\\to\\folder  (пусто = текущая)",
+        "Папка для анализа размеров файлов и подпапок",
+    )
+
+    def do_analyse(_) -> None:
+        path = anl_f.value.strip() or "."
+        _, out, e = capture_stdout(analyze_sizes, path)
+        if e:
+            err(e)
+        else:
+            ok(out or "Готово.")
+
+    analyse_card = ToolCard(
+        "Анализ размеров",
+        ft.Icons.PIE_CHART_OUTLINE,
+        "#5bf6d8",
+        ft.Column(
+            spacing=12,
+            controls=[
+                labeled(
+                    "Папка для анализа",
+                    prow(anl_f, dir_pick_btn(anl_f)),
+                ),
+                action_btn(
+                    "Анализировать",
+                    ft.Icons.BAR_CHART,
+                    "#5bf6d8",
+                    do_analyse,
+                    "Показать размеры файлов и папок",
+                    text_color=BG,
+                ),
+            ],
+        ),
+    )
+
     header = ft.Container(
         content=ft.Row(
             spacing=14,
