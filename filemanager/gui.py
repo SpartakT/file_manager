@@ -38,7 +38,13 @@ def capture_stdout(func, *args, **kwargs):
 
 
 class ToolCard(ft.Container):
-    def __init__(self, title: str, icon: str, color: str, content: ft.Control):
+    def __init__(
+        self,
+        title: str,
+        icon: str,
+        color: str,
+        content: ft.Control,
+    ):
         super().__init__()
         self.padding = 20
         self.border_radius = 14
@@ -77,7 +83,12 @@ class OutputBox(ft.Container):
             color=MUTED,
             italic=True,
         )
-        self._text = ft.Text("", size=13, color=TEXT, selectable=True)
+        self._text = ft.Text(
+            "",
+            size=13,
+            color=TEXT,
+            selectable=True,
+        )
         super().__init__(
             content=ft.Column(
                 scroll=ft.ScrollMode.AUTO,
@@ -95,7 +106,9 @@ class OutputBox(ft.Container):
         self._placeholder.visible = False
         self._text.value = message
         self._text.color = DANGER if is_error else SUCCESS
-        self.border = ft.Border.all(1, DANGER if is_error else SUCCESS)
+        self.border = ft.Border.all(
+            1, DANGER if is_error else SUCCESS
+        )
         self.update()
 
 
@@ -125,12 +138,12 @@ def prow(field: ft.TextField, btn: ft.Control) -> ft.Row:
 
 
 def action_btn(
-        label: str,
-        icon: str,
-        color: str,
-        handler,
-        tooltip: str,
-        text_color: str = "#ffffff",
+    label: str,
+    icon: str,
+    color: str,
+    handler,
+    tooltip: str,
+    text_color: str = "#ffffff",
 ) -> ft.Button:
     return ft.Button(
         content=ft.Row(
@@ -234,7 +247,10 @@ def main(page: ft.Page) -> None:
     confirm = ft.AlertDialog(
         modal=True,
         title=ft.Text("Подтверждение удаления", color=TEXT),
-        content=ft.Text("Вы уверены? Это действие необратимо.", color=MUTED),
+        content=ft.Text(
+            "Вы уверены? Это действие необратимо.",
+            color=MUTED,
+        ),
         bgcolor=CARD,
         actions_alignment=ft.MainAxisAlignment.END,
     )
@@ -527,7 +543,9 @@ def main(page: ft.Page) -> None:
             controls=[
                 ft.Container(
                     content=ft.Icon(
-                        ft.Icons.FOLDER_SPECIAL, color=ACCENT, size=28
+                        ft.Icons.FOLDER_SPECIAL,
+                        color=ACCENT,
+                        size=28,
                     ),
                     bgcolor=f"{ACCENT}22",
                     padding=10,
@@ -584,7 +602,14 @@ def main(page: ft.Page) -> None:
         columns=12,
         spacing=16,
         run_spacing=16,
-        controls=[],
+        controls=[
+            ft.Column(col={"sm": 12, "md": 6}, controls=[copy_card]),
+            ft.Column(col={"sm": 12, "md": 6}, controls=[delete_card]),
+            ft.Column(col={"sm": 12, "md": 6}, controls=[count_card]),
+            ft.Column(col={"sm": 12, "md": 6}, controls=[search_card]),
+            ft.Column(col={"sm": 12, "md": 6}, controls=[date_card]),
+            ft.Column(col={"sm": 12, "md": 6}, controls=[analyse_card]),
+        ],
     )
 
     body = ft.Container(
@@ -595,7 +620,13 @@ def main(page: ft.Page) -> None:
         padding=ft.Padding(left=28, right=28, top=20, bottom=20),
     )
 
-    page.add(ft.Column(spacing=0, controls=[header, body], expand=True))
+    page.add(
+        ft.Column(
+            spacing=0,
+            controls=[header, body],
+            expand=True,
+        )
+    )
 
 
 ft.run(main)
