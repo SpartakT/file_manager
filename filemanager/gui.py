@@ -622,4 +622,8 @@ def main(page: ft.Page) -> None:
     )
 
 
-ft.run(main)
+def run():
+    ft.run(main)
+
+if __name__ == "__main__":
+    run()

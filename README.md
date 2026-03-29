@@ -1,40 +1,64 @@
-File System Manager
+# File System Manager
 
-CLI утилита для управления файлами.
+CLI утилита и графический интерфейс для управления файлами.
 
-Команды
-- `fm copy source dest` - Копировать файл.
-  Пример: `fm copy test.txt`
-- `fm delete path` - Удалить файл/папку.
-  Пример: `fm delete folder_name`
-- `fm count path` - Посчитать файлы в папке (вкл. вложенные).
-  Пример: `fm count .`
-- `fm search path pattern` - Поиск по regex.
-  Пример: `fm search . "\.txt$"`
-- `fm add_date path --recursive` - Добавить дату создания в имя.
-  Пример: `fm add_date folder --recursive`
-- `fm analyse path` - Анализ размеров.
-  Пример: `fm analyse .`
+## Требования
 
-Help: `fm --help`
+- Python >= 3.6
 
+## Установка
+```bash
+pip install .
+```
 
+---
 
+## Запуск GUI
+```bash
+fm-gui
+# или
+python filemanager/gui.py
+```
 
+В интерфейсе доступны все операции: копирование, удаление, подсчёт, поиск, добавление даты и анализ размеров.  
+Пути к файлам и папкам можно вводить вручную или выбрать через встроенный проводник.
 
+---
 
-Для проверки
-- `python filemanager/cli.py copy source dest` - Копировать файл.
-  Пример: `python filemanager/cli.py copy test.txt`
-- `python filemanager/cli.py delete path` - Удалить файл/папку.
-  Пример: `python filemanager/cli.py delete folder_name`
-- `python filemanager/cli.py count path` - Посчитать файлы в папке (вкл. вложенные).
-  Пример: `python filemanager/cli.py count .`
-- `python filemanager/cli.py search path pattern` - Поиск по regex.
-  Пример: `python filemanager/cli.py search . "\.txt$"`
-- `python filemanager/cli.py add_date path --recursive` - Добавить дату создания в имя.
-  Пример: `python filemanager/cli.py add_date folder --recursive`
-- `python filemanager/cli.py analyse path` - Анализ размеров.
-  Пример: `python filemanager/cli.py analyse .`
+## Запуск CLI
+```bash
+fm --help
+```
 
-Help: `python filemanager/cli.py --help`
+### Команды
+
+| Команда | Описание |
+|---|---|
+| `fm copy <source> [dest]` | Копировать файл. Если `dest` не указан — создаётся `<source>_copy` |
+| `fm delete <path>` | Удалить файл или папку |
+| `fm count [path]` | Посчитать файлы в папке, включая вложенные (по умолчанию `.`) |
+| `fm search [path] <pattern>` | Поиск файлов по regex (по умолчанию `.`) |
+| `fm add_date <path> [--recursive]` | Добавить дату создания к имени файла/папки |
+| `fm analyse [path]` | Анализ размеров файлов и папок (по умолчанию `.`) |
+
+### Примеры
+```bash
+fm copy report.txt backup/report.txt
+fm copy report.txt                    
+fm delete old_folder
+fm count ./src
+fm search . "\.py$"
+fm add_date ./docs --recursive
+fm analyse .
+```
+
+---
+
+## Структура проекта
+```
+filemanager/
+├── cli.py          # CLI-интерфейс
+├── gui.py          # GUI на Flet
+└── fs_manager.py   # Основная логика
+config.py           # Цветовая схема GUI
+```
