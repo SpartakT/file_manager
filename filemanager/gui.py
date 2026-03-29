@@ -1,6 +1,7 @@
 import io
 import sys
 import flet as ft
+import os
 from fs_manager import (
     add_creation_date,
     analyze_sizes,
@@ -9,17 +10,7 @@ from fs_manager import (
     delete_path,
     search_files,
 )
-
-BG = "#0f1117"
-SURFACE = "#1a1d27"
-CARD = "#21253a"
-ACCENT = "#5b7cf6"
-ACCENT2 = "#7c5bf6"
-SUCCESS = "#3ecf8e"
-DANGER = "#f65b5b"
-TEXT = "#e8eaf0"
-MUTED = "#6b7280"
-BORDER = "#2e3347"
+import config
 
 
 def capture_stdout(func, *args, **kwargs):
@@ -48,8 +39,8 @@ class ToolCard(ft.Container):
         super().__init__()
         self.padding = 20
         self.border_radius = 14
-        self.bgcolor = CARD
-        self.border = ft.Border.all(1, BORDER)
+        self.bgcolor = config.CARD
+        self.border = ft.Border.all(1, config.BORDER)
         self.content = ft.Column(
             spacing=14,
             controls=[
@@ -66,7 +57,7 @@ class ToolCard(ft.Container):
                             title,
                             size=15,
                             weight=ft.FontWeight.W_600,
-                            color=TEXT,
+                            color=config.TEXT,
                         ),
                     ],
                 ),
@@ -80,13 +71,13 @@ class OutputBox(ft.Container):
         self._placeholder = ft.Text(
             "Здесь появится результат выполнения операции...",
             size=12,
-            color=MUTED,
+            color=config.MUTED,
             italic=True,
         )
         self._text = ft.Text(
             "",
             size=13,
-            color=TEXT,
+            color=config.TEXT,
             selectable=True,
         )
         super().__init__(
@@ -95,19 +86,19 @@ class OutputBox(ft.Container):
                 controls=[self._placeholder, self._text],
                 height=120,
             ),
-            bgcolor=SURFACE,
+            bgcolor=config.SURFACE,
             border_radius=12,
             padding=ft.Padding(left=16, right=16, top=12, bottom=12),
-            border=ft.Border.all(1, BORDER),
+            border=ft.Border.all(1, config.BORDER),
             expand=True,
         )
 
     def show(self, message: str, is_error: bool = False) -> None:
         self._placeholder.visible = False
         self._text.value = message
-        self._text.color = DANGER if is_error else SUCCESS
+        self._text.color = config.DANGER if is_error else config.SUCCESS
         self.border = ft.Border.all(
-            1, DANGER if is_error else SUCCESS
+            1, config.DANGER if is_error else config.SUCCESS
         )
         self.update()
 
@@ -116,11 +107,11 @@ def path_field(hint: str, tooltip: str) -> ft.TextField:
     return ft.TextField(
         hint_text=hint,
         expand=True,
-        bgcolor=SURFACE,
-        border_color=BORDER,
-        focused_border_color=ACCENT,
-        color=TEXT,
-        hint_style=ft.TextStyle(color=MUTED),
+        bgcolor=config.SURFACE,
+        border_color=config.BORDER,
+        focused_border_color=config.ACCENT,
+        color=config.TEXT,
+        hint_style=ft.TextStyle(color=config.MUTED),
         border_radius=8,
         tooltip=tooltip,
     )
@@ -129,7 +120,7 @@ def path_field(hint: str, tooltip: str) -> ft.TextField:
 def labeled(label: str, control: ft.Control) -> ft.Column:
     return ft.Column(
         spacing=6,
-        controls=[ft.Text(label, size=12, color=MUTED), control],
+        controls=[ft.Text(label, size=12, color=config.MUTED), control],
     )
 
 
@@ -174,7 +165,7 @@ def file_pick_btn(field: ft.TextField) -> ft.IconButton:
 
     return ft.IconButton(
         icon=ft.Icons.UPLOAD_FILE,
-        icon_color=ACCENT,
+        icon_color=config.ACCENT,
         tooltip="Выбрать файл через проводник",
         on_click=on_click,
     )
@@ -190,7 +181,7 @@ def dir_pick_btn(field: ft.TextField) -> ft.IconButton:
 
     return ft.IconButton(
         icon=ft.Icons.FOLDER_OPEN,
-        icon_color=ACCENT,
+        icon_color=config.ACCENT,
         tooltip="Выбрать папку через проводник",
         on_click=on_click,
     )
@@ -216,13 +207,13 @@ def file_or_dir_btns(field: ft.TextField) -> ft.Row:
         controls=[
             ft.IconButton(
                 icon=ft.Icons.UPLOAD_FILE,
-                icon_color=ACCENT,
+                icon_color=config.ACCENT,
                 tooltip="Выбрать файл",
                 on_click=pick_file,
             ),
             ft.IconButton(
                 icon=ft.Icons.FOLDER_OPEN,
-                icon_color=ACCENT,
+                icon_color=config.ACCENT,
                 tooltip="Выбрать папку",
                 on_click=pick_dir,
             ),
@@ -232,7 +223,7 @@ def file_or_dir_btns(field: ft.TextField) -> ft.Row:
 
 def main(page: ft.Page) -> None:
     page.title = "File Manager"
-    page.bgcolor = BG
+    page.bgcolor = config.BG
     page.padding = 0
     page.scroll = ft.ScrollMode.ADAPTIVE
 
@@ -246,12 +237,12 @@ def main(page: ft.Page) -> None:
 
     confirm = ft.AlertDialog(
         modal=True,
-        title=ft.Text("Подтверждение удаления", color=TEXT),
+        title=ft.Text("Подтверждение удаления", color=config.TEXT),
         content=ft.Text(
             "Вы уверены? Это действие необратимо.",
-            color=MUTED,
+            color=config.MUTED,
         ),
-        bgcolor=CARD,
+        bgcolor=config.CARD,
         actions_alignment=ft.MainAxisAlignment.END,
     )
     page.overlay.append(confirm)
@@ -280,7 +271,7 @@ def main(page: ft.Page) -> None:
     copy_card = ToolCard(
         "Копировать файл",
         ft.Icons.COPY,
-        ACCENT,
+        config.ACCENT,
         ft.Column(
             spacing=12,
             controls=[
@@ -292,7 +283,7 @@ def main(page: ft.Page) -> None:
                 action_btn(
                     "Копировать",
                     ft.Icons.COPY,
-                    ACCENT,
+                    config.ACCENT,
                     do_copy,
                     "Скопировать файл в указанное место",
                 ),
@@ -300,9 +291,11 @@ def main(page: ft.Page) -> None:
         ),
     )
 
+    default_target_path = os.path.join("C:", "path", "to", "target")
+
     del_f = path_field(
-        "C:\\path\\to\\target",
-        "Файл или папка для удаления",
+        default_target_path,
+        "Файл или папка для удаления"
     )
 
     def confirmed(_) -> None:
@@ -323,12 +316,12 @@ def main(page: ft.Page) -> None:
         ft.TextButton(
             "Отмена",
             on_click=cancel,
-            style=ft.ButtonStyle(color=MUTED),
+            style=ft.ButtonStyle(color=config.MUTED),
         ),
         action_btn(
             "Удалить",
             ft.Icons.DELETE_FOREVER,
-            DANGER,
+            config.DANGER,
             confirmed,
             "Подтвердить удаление",
         ),
@@ -344,7 +337,7 @@ def main(page: ft.Page) -> None:
     delete_card = ToolCard(
         "Удалить файл / папку",
         ft.Icons.DELETE_OUTLINE,
-        DANGER,
+        config.DANGER,
         ft.Column(
             spacing=12,
             controls=[
@@ -358,7 +351,7 @@ def main(page: ft.Page) -> None:
                 action_btn(
                     "Удалить",
                     ft.Icons.DELETE_FOREVER,
-                    DANGER,
+                    config.DANGER,
                     do_delete,
                     "Безвозвратно удалить файл или папку",
                 ),
@@ -382,7 +375,7 @@ def main(page: ft.Page) -> None:
     count_card = ToolCard(
         "Подсчёт файлов",
         ft.Icons.FOLDER_COPY,
-        "#f6a15b",
+        config.COUNT_COLOR,
         ft.Column(
             spacing=12,
             controls=[
@@ -390,7 +383,7 @@ def main(page: ft.Page) -> None:
                 action_btn(
                     "Посчитать",
                     ft.Icons.NUMBERS,
-                    "#f6a15b",
+                    config.COUNT_COLOR,
                     do_count,
                     "Посчитать все файлы рекурсивно",
                 ),
@@ -404,11 +397,11 @@ def main(page: ft.Page) -> None:
     )
     srch_pat = ft.TextField(
         hint_text=r"Regex, например: \.py$",
-        bgcolor=SURFACE,
-        border_color=BORDER,
-        focused_border_color=ACCENT,
-        color=TEXT,
-        hint_style=ft.TextStyle(color=MUTED),
+        bgcolor=config.SURFACE,
+        border_color=config.BORDER,
+        focused_border_color=config.ACCENT,
+        color=config.TEXT,
+        hint_style=ft.TextStyle(color=config.MUTED),
         border_radius=8,
         tooltip="Регулярное выражение для поиска по имени файла",
     )
@@ -430,7 +423,7 @@ def main(page: ft.Page) -> None:
     search_card = ToolCard(
         "Поиск файлов по regex",
         ft.Icons.SEARCH,
-        SUCCESS,
+        config.SUCCESS,
         ft.Column(
             spacing=12,
             controls=[
@@ -442,7 +435,7 @@ def main(page: ft.Page) -> None:
                 action_btn(
                     "Найти",
                     ft.Icons.SEARCH,
-                    SUCCESS,
+                    config.SUCCESS,
                     do_search,
                     "Найти файлы по имени",
                 ),
@@ -457,7 +450,7 @@ def main(page: ft.Page) -> None:
     recursive = ft.Checkbox(
         label="Рекурсивно (для папок)",
         value=False,
-        fill_color=ACCENT,
+        fill_color=config.ACCENT,
         check_color="#fff",
         tooltip="Обрабатывать все вложенные подпапки",
     )
@@ -478,7 +471,7 @@ def main(page: ft.Page) -> None:
     date_card = ToolCard(
         "Добавить дату создания к именам",
         ft.Icons.CALENDAR_TODAY,
-        ACCENT2,
+        config.ACCENT2,
         ft.Column(
             spacing=12,
             controls=[
@@ -493,7 +486,7 @@ def main(page: ft.Page) -> None:
                 action_btn(
                     "Добавить даты",
                     ft.Icons.DRIVE_FILE_RENAME_OUTLINE,
-                    ACCENT2,
+                    config.ACCENT2,
                     do_add_date,
                     "Переименовать файлы, добавив дату создания",
                 ),
@@ -517,7 +510,7 @@ def main(page: ft.Page) -> None:
     analyse_card = ToolCard(
         "Анализ размеров",
         ft.Icons.PIE_CHART_OUTLINE,
-        "#5bf6d8",
+        config.ANALYSE_COLOR,
         ft.Column(
             spacing=12,
             controls=[
@@ -528,10 +521,10 @@ def main(page: ft.Page) -> None:
                 action_btn(
                     "Анализировать",
                     ft.Icons.BAR_CHART,
-                    "#5bf6d8",
+                    config.ANALYSE_COLOR,
                     do_analyse,
                     "Показать размеры файлов и папок",
-                    text_color=BG,
+                    text_color=config.BG,
                 ),
             ],
         ),
@@ -544,10 +537,10 @@ def main(page: ft.Page) -> None:
                 ft.Container(
                     content=ft.Icon(
                         ft.Icons.FOLDER_SPECIAL,
-                        color=ACCENT,
+                        color=config.ACCENT,
                         size=28,
                     ),
-                    bgcolor=f"{ACCENT}22",
+                    bgcolor=f"{config.ACCENT}22",
                     padding=10,
                     border_radius=12,
                 ),
@@ -558,19 +551,19 @@ def main(page: ft.Page) -> None:
                             "File Manager",
                             size=22,
                             weight=ft.FontWeight.W_700,
-                            color=TEXT,
+                            color=config.TEXT,
                         ),
                         ft.Text(
                             "Управление файловой системой",
                             size=13,
-                            color=MUTED,
+                            color=config.MUTED,
                         ),
                     ],
                 ),
             ],
         ),
         padding=ft.Padding(left=28, right=28, top=22, bottom=22),
-        border=ft.Border(bottom=ft.BorderSide(1, BORDER)),
+        border=ft.Border(bottom=ft.BorderSide(1, config.BORDER)),
     )
 
     result_panel = ft.Container(
@@ -580,11 +573,11 @@ def main(page: ft.Page) -> None:
                 ft.Row(
                     spacing=8,
                     controls=[
-                        ft.Icon(ft.Icons.TERMINAL, color=ACCENT, size=16),
+                        ft.Icon(ft.Icons.TERMINAL, color=config.ACCENT, size=16),
                         ft.Text(
                             "Результат",
                             size=13,
-                            color=TEXT,
+                            color=config.TEXT,
                             weight=ft.FontWeight.W_600,
                         ),
                     ],
@@ -592,10 +585,10 @@ def main(page: ft.Page) -> None:
                 output,
             ],
         ),
-        bgcolor=CARD,
+        bgcolor=config.CARD,
         border_radius=14,
         padding=16,
-        border=ft.Border.all(1, BORDER),
+        border=ft.Border.all(1, config.BORDER),
     )
 
     grid = ft.ResponsiveRow(
